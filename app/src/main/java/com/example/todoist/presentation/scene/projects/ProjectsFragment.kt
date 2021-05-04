@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoist.R
 import com.example.todoist.common.TodoistApplication
 import com.example.todoist.databinding.FragmentProjectsBinding
+import com.example.todoist.presentation.common.ScreenState
 import com.example.todoist.presentation.scene.main.MainActivity
 import com.example.todoist.presentation.scene.main.MainViewModel
 import javax.inject.Inject
@@ -41,6 +43,32 @@ class ProjectsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val adapter = ProjectsAdapter()
+
+        binding.projectList.adapter = adapter
+        binding.projectList.layoutManager = LinearLayoutManager(requireContext())
+
+        viewModel.screenState.observe(this){screenState ->
+            when(screenState){
+                is ScreenState.Success -> {
+                    adapter.setItems(screenState.data)
+                    binding.emptyStateIndicator.visibility = View.GONE
+                    binding.progressIndicator.visibility = View.GONE
+                    binding.projectList.visibility = View.VISIBLE
+
+                }
+                is ScreenState.Loading -> {
+                    binding.emptyStateIndicator.visibility = View.GONE
+                    binding.progressIndicator.visibility = View.VISIBLE
+                    binding.projectList.visibility = View.GONE
+                }
+                is ScreenState.Error -> {
+                    binding.emptyStateIndicator.visibility = View.VISIBLE
+                    binding.progressIndicator.visibility = View.GONE
+                    binding.projectList.visibility = View.GONE
+                }
+            }
+        }
 
     }
 }
