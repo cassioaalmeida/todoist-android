@@ -10,6 +10,7 @@ import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -26,6 +27,9 @@ interface ApplicationComponent {
 
 @Module
 class ApplicationModule {
+
+    @Provides
+    fun compositeDisposable(): CompositeDisposable = CompositeDisposable()
 
     @Provides
     fun converterFactory(): GsonConverterFactory = GsonConverterFactory.create()
