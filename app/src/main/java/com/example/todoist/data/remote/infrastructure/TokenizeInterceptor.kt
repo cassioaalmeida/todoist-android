@@ -8,7 +8,7 @@ import javax.inject.Inject
 class TokenizeInterceptor @Inject constructor() : Interceptor {
 
     companion object {
-        private const val API_TEST_TOKEN = "9d4670c96949d241cf6f796346f89e85c8342b08"
+        private const val API_TEST_TOKEN = "004054d877e81de9ec35a6d6725de660d9c450c2"
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
