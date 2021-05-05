@@ -4,6 +4,8 @@ import com.example.todoist.data.remote.TodoistRDS
 import com.example.todoist.data.remote.infrastructure.TokenizeInterceptor
 import com.example.todoist.presentation.scene.main.MainActivity
 import com.example.todoist.presentation.scene.projects.ProjectsFragment
+import com.example.todoist.presentation.scene.sections.SectionsFragment
+import com.example.todoist.presentation.scene.tasks.TasksFragment
 import com.pacoworks.rxpaper2.RxPaperBook
 import dagger.Component
 import dagger.Module
@@ -23,6 +25,8 @@ import javax.inject.Singleton
 interface ApplicationComponent {
     fun inject(mainActivity: MainActivity)
     fun inject(fragment: ProjectsFragment)
+    fun inject(fragment: SectionsFragment)
+    fun inject(fragment: TasksFragment)
 }
 
 @Module

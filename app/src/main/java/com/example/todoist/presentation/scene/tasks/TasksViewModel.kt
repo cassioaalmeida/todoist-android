@@ -1,33 +1,26 @@
-package com.example.todoist.presentation.scene.projects
+package com.example.todoist.presentation.scene.tasks
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.todoist.data.model.Project
+import com.example.todoist.data.model.Task
 import com.example.todoist.data.repository.TodoistRepository
-import com.example.todoist.presentation.common.Event
 import com.example.todoist.presentation.common.ScreenState
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 
-class ProjectsViewModel @Inject constructor(
+class TasksViewModel @Inject constructor(
     private val repository: TodoistRepository,
     private val compositeDisposable: CompositeDisposable
 ): ViewModel() {
-
-    private val _screenState: MutableLiveData<ScreenState<List<Project>>> = MutableLiveData()
-    val screenState: LiveData<ScreenState<List<Project>>>
+    private val _screenState: MutableLiveData<ScreenState<List<Task>>> = MutableLiveData()
+    val screenState: LiveData<ScreenState<List<Task>>>
         get() = _screenState
 
-    private val _navigationSections: MutableLiveData<Event<Long>> = MutableLiveData()
-    val navigationSections: MutableLiveData<Event<Long>>
-        get() = _navigationSections
 
-
-    init {
-        repository.getProjects()
+    fun onIdReceived(sectionId: Long) {
+        repository.getTasks(sectionId)
             .doOnSubscribe { _screenState.value = ScreenState.Loading }
             .subscribe(
                 { _screenState.value = ScreenState.Success(it) },
@@ -35,9 +28,6 @@ class ProjectsViewModel @Inject constructor(
             ).addTo(compositeDisposable)
     }
 
-    fun onProjectClicked(project: Project) {
-        navigationSections.value = Event(project.id!!)
-    }
 
     override fun onCleared() {
         super.onCleared()
