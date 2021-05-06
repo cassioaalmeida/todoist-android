@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoist.R
 import com.example.todoist.common.TodoistApplication
+import com.example.todoist.data.model.Task
 import com.example.todoist.databinding.FragmentSectionsBinding
 import com.example.todoist.presentation.common.ScreenState
 import com.example.todoist.presentation.scene.tasks.TasksFragment
@@ -20,6 +21,18 @@ class SectionsFragment : Fragment() {
 
     companion object {
         const val SECTIONS_KEY = "SECTIONS_KEY"
+
+        fun newInstance(projectId: Long): SectionsFragment {
+            val sectionsFragment = SectionsFragment()
+
+            val bundle = Bundle()
+
+            bundle.putLong(SECTIONS_KEY, projectId)
+
+            sectionsFragment.arguments = bundle
+
+            return sectionsFragment
+        }
     }
 
     @Inject
@@ -52,22 +65,18 @@ class SectionsFragment : Fragment() {
         binding.sectionList.adapter = adapter
         binding.sectionList.layoutManager = LinearLayoutManager(requireContext())
 
-        val bundle = Bundle()
-        val receivedProjectId = bundle.getLong(SECTIONS_KEY, 0)
+        val receivedProjectId = this.arguments?.get(SECTIONS_KEY)
 
-        viewModel.onIdReceived(receivedProjectId)
+        viewModel.onIdReceived(receivedProjectId.toString().toLong())
 
         viewModel.navigationTasks.observe(this) { sectionIdEvent ->
             sectionIdEvent.handleEvent { sectionId ->
 
-                val bundle = Bundle()
-                val fragment = TasksFragment()
-                bundle.putLong(TasksFragment.TASKS_KEY, sectionId);
-                fragment.arguments = bundle;
+                val fragment = TasksFragment.newInstance(sectionId)
 
                 requireFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.container, TasksFragment())
+                    .replace(R.id.container, fragment)
                     .addToBackStack(null)
                     .commit()
             }

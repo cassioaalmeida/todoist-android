@@ -53,14 +53,11 @@ class ProjectsFragment : Fragment() {
         viewModel.navigationSections.observe(this) { projectIdEvent ->
             projectIdEvent.handleEvent { projectId ->
 
-                val bundle = Bundle()
-                val fragment = SectionsFragment()
-                bundle.putLong(SectionsFragment.SECTIONS_KEY, projectId);
-                fragment.arguments = bundle;
+                val fragment = SectionsFragment.newInstance(projectId)
 
                 requireFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.container, SectionsFragment())
+                    .replace(R.id.container, fragment)
                     .addToBackStack(null)
                     .commit()
             }

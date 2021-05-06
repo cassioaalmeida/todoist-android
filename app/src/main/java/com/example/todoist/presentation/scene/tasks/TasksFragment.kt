@@ -21,6 +21,18 @@ class TasksFragment : Fragment() {
 
     companion object {
         const val TASKS_KEY = "TASKS_KEY"
+
+        fun newInstance(sectionId: Long): TasksFragment {
+            val tasksFragment = TasksFragment()
+
+            val bundle = Bundle()
+
+            bundle.putLong(TASKS_KEY, sectionId)
+
+            tasksFragment.arguments = bundle
+
+            return tasksFragment
+        }
     }
 
     @Inject
@@ -53,10 +65,9 @@ class TasksFragment : Fragment() {
         binding.taskList.adapter = adapter
         binding.taskList.layoutManager = LinearLayoutManager(requireContext())
 
-        val bundle = Bundle()
-        val receivedProjectId = bundle.getLong(TASKS_KEY, 0)
+        val receivedSectionId = this.arguments?.get(TASKS_KEY)
 
-        viewModel.onIdReceived(receivedProjectId)
+        viewModel.onIdReceived(receivedSectionId.toString().toLong())
 
         viewModel.screenState.observe(this){screenState ->
             when(screenState){
