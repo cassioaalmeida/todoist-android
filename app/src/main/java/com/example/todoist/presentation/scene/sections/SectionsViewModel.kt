@@ -8,22 +8,20 @@ import com.example.todoist.data.model.Section
 import com.example.todoist.data.repository.TodoistRepository
 import com.example.todoist.presentation.common.Event
 import com.example.todoist.presentation.common.ScreenState
+import com.example.todoist.presentation.common.Screens
+import com.github.terrakok.cicerone.Router
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 
 class SectionsViewModel @Inject constructor(
     private val repository: TodoistRepository,
-    private val compositeDisposable: CompositeDisposable
+    private val compositeDisposable: CompositeDisposable,
+    private val router: Router
 ): ViewModel() {
     private val _screenState: MutableLiveData<ScreenState<List<Section>>> = MutableLiveData()
     val screenState: LiveData<ScreenState<List<Section>>>
         get() = _screenState
-
-
-    private val _navigationTasks: MutableLiveData<Event<Long>> = MutableLiveData()
-    val navigationTasks: MutableLiveData<Event<Long>>
-        get() = _navigationTasks
 
     fun onIdReceived(projectId: Long) {
         repository.getSections(projectId)
@@ -35,7 +33,7 @@ class SectionsViewModel @Inject constructor(
     }
 
     fun onSectionClicked(section: Section) {
-        navigationTasks.value = Event(section.id!!)
+        router.navigateTo(Screens.TasksScreen(section.id))
     }
 
     override fun onCleared() {

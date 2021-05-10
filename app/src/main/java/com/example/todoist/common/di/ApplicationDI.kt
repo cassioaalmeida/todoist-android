@@ -6,6 +6,9 @@ import com.example.todoist.presentation.scene.main.MainActivity
 import com.example.todoist.presentation.scene.projects.ProjectsFragment
 import com.example.todoist.presentation.scene.sections.SectionsFragment
 import com.example.todoist.presentation.scene.tasks.TasksFragment
+import com.github.terrakok.cicerone.Cicerone
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.Router
 import com.pacoworks.rxpaper2.RxPaperBook
 import dagger.Component
 import dagger.Module
@@ -31,6 +34,16 @@ interface ApplicationComponent {
 
 @Module
 class ApplicationModule {
+
+    @Singleton
+    @Provides
+    fun cicerone(): Cicerone<Router> = Cicerone.create()
+
+    @Provides
+    fun router(cicerone: Cicerone<Router>): Router = cicerone.router
+
+    @Provides
+    fun navigatorHolder(cicerone: Cicerone<Router>): NavigatorHolder = cicerone.getNavigatorHolder()
 
     @Provides
     fun compositeDisposable(): CompositeDisposable = CompositeDisposable()

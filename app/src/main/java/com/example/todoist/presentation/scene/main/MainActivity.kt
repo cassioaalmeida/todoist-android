@@ -6,10 +6,22 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.todoist.R
 import com.example.todoist.common.TodoistApplication
 import com.example.todoist.databinding.ActivityMainBinding
+import com.example.todoist.presentation.common.Screens
 import com.example.todoist.presentation.scene.projects.ProjectsFragment
+import com.github.terrakok.cicerone.Cicerone
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.Router
+import com.github.terrakok.cicerone.androidx.AppNavigator
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var router: Router
+    @Inject
+    lateinit var navigationHolder:NavigatorHolder
+
+    private val navigator = AppNavigator(this, R.id.container)
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -26,9 +38,16 @@ class MainActivity : AppCompatActivity() {
         (application as TodoistApplication).applicationComponent.inject(this)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
 
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.container, ProjectsFragment())
-            .commit()
+        router.replaceScreen(Screens.projectsScreen())
+    }
+
+    override fun onResume() {
+        super.onResume()
+        navigationHolder.setNavigator(navigator)
+    }
+
+    override fun onPause() {
+        navigationHolder.removeNavigator()
+        super.onPause()
     }
 }

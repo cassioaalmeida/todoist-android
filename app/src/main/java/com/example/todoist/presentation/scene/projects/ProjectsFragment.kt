@@ -13,13 +13,18 @@ import com.example.todoist.R
 import com.example.todoist.common.TodoistApplication
 import com.example.todoist.databinding.FragmentProjectsBinding
 import com.example.todoist.presentation.common.ScreenState
+import com.example.todoist.presentation.common.Screens
 import com.example.todoist.presentation.scene.main.MainActivity
 import com.example.todoist.presentation.scene.main.MainViewModel
 import com.example.todoist.presentation.scene.sections.SectionsFragment
+import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class ProjectsFragment : Fragment() {
 
+    companion object {
+        fun newInstance() = ProjectsFragment()
+    }
     @Inject
     lateinit var  viewModelFactory: ViewModelProvider.Factory
 
@@ -49,19 +54,6 @@ class ProjectsFragment : Fragment() {
 
         binding.projectList.adapter = adapter
         binding.projectList.layoutManager = LinearLayoutManager(requireContext())
-
-        viewModel.navigationSections.observe(this) { projectIdEvent ->
-            projectIdEvent.handleEvent { projectId ->
-
-                val fragment = SectionsFragment.newInstance(projectId)
-
-                requireFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .addToBackStack(null)
-                    .commit()
-            }
-        }
 
         viewModel.screenState.observe(this){screenState ->
             when(screenState){

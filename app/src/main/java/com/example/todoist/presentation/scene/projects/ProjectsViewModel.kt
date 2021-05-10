@@ -7,6 +7,8 @@ import com.example.todoist.data.model.Project
 import com.example.todoist.data.repository.TodoistRepository
 import com.example.todoist.presentation.common.Event
 import com.example.todoist.presentation.common.ScreenState
+import com.example.todoist.presentation.common.Screens
+import com.github.terrakok.cicerone.Router
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.addTo
@@ -14,17 +16,13 @@ import javax.inject.Inject
 
 class ProjectsViewModel @Inject constructor(
     private val repository: TodoistRepository,
-    private val compositeDisposable: CompositeDisposable
+    private val compositeDisposable: CompositeDisposable,
+    private val router: Router
 ): ViewModel() {
 
     private val _screenState: MutableLiveData<ScreenState<List<Project>>> = MutableLiveData()
     val screenState: LiveData<ScreenState<List<Project>>>
         get() = _screenState
-
-    private val _navigationSections: MutableLiveData<Event<Long>> = MutableLiveData()
-    val navigationSections: MutableLiveData<Event<Long>>
-        get() = _navigationSections
-
 
     init {
         repository.getProjects()
@@ -36,7 +34,7 @@ class ProjectsViewModel @Inject constructor(
     }
 
     fun onProjectClicked(project: Project) {
-        navigationSections.value = Event(project.id!!)
+        router.navigateTo(Screens.SectionsScreen(project.id))
     }
 
     override fun onCleared() {

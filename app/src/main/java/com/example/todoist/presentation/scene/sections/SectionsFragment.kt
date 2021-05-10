@@ -13,7 +13,9 @@ import com.example.todoist.common.TodoistApplication
 import com.example.todoist.data.model.Task
 import com.example.todoist.databinding.FragmentSectionsBinding
 import com.example.todoist.presentation.common.ScreenState
+import com.example.todoist.presentation.common.Screens
 import com.example.todoist.presentation.scene.tasks.TasksFragment
+import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 
 
@@ -37,6 +39,8 @@ class SectionsFragment : Fragment() {
 
     @Inject
     lateinit var  viewModelFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var router: Router
 
     private lateinit var binding: FragmentSectionsBinding
     private lateinit var viewModel: SectionsViewModel
@@ -68,19 +72,6 @@ class SectionsFragment : Fragment() {
         val receivedProjectId = this.arguments?.get(SECTIONS_KEY)
 
         viewModel.onIdReceived(receivedProjectId.toString().toLong())
-
-        viewModel.navigationTasks.observe(this) { sectionIdEvent ->
-            sectionIdEvent.handleEvent { sectionId ->
-
-                val fragment = TasksFragment.newInstance(sectionId)
-
-                requireFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .addToBackStack(null)
-                    .commit()
-            }
-        }
 
         viewModel.screenState.observe(this){ screenState ->
             when(screenState){
