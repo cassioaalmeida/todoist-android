@@ -1,7 +1,9 @@
 package com.example.todoist.common.di
 
+import com.example.domain.datarepository.TodoistDataRepository
 import com.example.todoist.data.remote.TodoistRDS
 import com.example.todoist.data.remote.infrastructure.TokenizeInterceptor
+import com.example.todoist.data.repository.TodoistRepository
 import com.example.todoist.presentation.scene.main.MainActivity
 import com.example.todoist.presentation.scene.projects.ProjectsFragment
 import com.example.todoist.presentation.scene.sections.SectionsFragment
@@ -87,4 +89,7 @@ class ApplicationModule {
     @Provides
     @IOScheduler
     fun ioScheduler(): Scheduler = Schedulers.io()
+
+    @Provides
+    fun todoistDataRepository(todoistRepository: TodoistRepository): TodoistDataRepository = todoistRepository
 }

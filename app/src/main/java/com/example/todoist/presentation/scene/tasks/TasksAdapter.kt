@@ -1,8 +1,8 @@
 package com.example.todoist.presentation.scene.tasks
 
 import android.view.View
+import com.example.domain.model.Task
 import com.example.todoist.R
-import com.example.todoist.data.model.Task
 import com.example.todoist.databinding.TaskItemBinding
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder

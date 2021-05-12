@@ -1,15 +1,15 @@
 package com.example.domain.usecase
 
 import com.example.domain.datarepository.TodoistDataRepository
-import com.example.domain.model.Project
+import com.example.domain.model.Task
 import io.reactivex.Single
 import javax.inject.Inject
 
-class GetProjectListUC @Inject constructor (
+class GetTaskListUC @Inject constructor(
     private val todoistDataRepository: TodoistDataRepository
-    )
+)
 {
 
-    fun getSingle() : Single<List<Project>> =
-        todoistDataRepository.getProjects()
+    fun getSingle(sectionId: Long) : Single<List<Task>> =
+        todoistDataRepository.getTasks(sectionId)
 }
