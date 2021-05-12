@@ -2,7 +2,6 @@ package com.example.todoist.presentation.scene.sections
 
 import android.view.View
 import com.example.todoist.R
-import com.example.todoist.data.model.Project
 import com.example.todoist.data.model.Section
 import com.example.todoist.databinding.SimpleTextItemBinding
 import com.xwray.groupie.GroupAdapter

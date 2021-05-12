@@ -1,9 +1,9 @@
 package com.example.todoist.data.remote
 
-import com.example.todoist.data.model.Project
 import com.example.todoist.data.model.Section
 import com.example.todoist.data.model.Task
 import com.example.todoist.data.model.UpsertTaskBody
+import com.example.todoist.data.remote.model.ProjectRM
 import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.http.*
@@ -11,7 +11,7 @@ import retrofit2.http.*
 interface TodoistRDS {
 
     @GET("projects")
-    fun getProjects(): Single<List<Project>>
+    fun getProjects(): Single<List<ProjectRM>>
 
     @GET("sections")
     fun getSections(@Query("project_id") projectId: Long): Single<List<Section>>

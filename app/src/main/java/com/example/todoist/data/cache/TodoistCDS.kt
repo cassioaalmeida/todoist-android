@@ -1,6 +1,6 @@
 package com.example.todoist.data.cache
 
-import com.example.todoist.data.model.Project
+import com.example.todoist.data.cache.model.ProjectCM
 import com.example.todoist.data.model.Section
 import com.example.todoist.data.model.Task
 import com.pacoworks.rxpaper2.RxPaperBook
@@ -18,10 +18,10 @@ class TodoistCDS @Inject constructor(
         private const val TASKS_KEY = "TASK_ID:"
     }
 
-    fun upsertProjects(projects: List<Project>): Completable =
+    fun upsertProjects(projects: List<ProjectCM>): Completable =
         paperBook.write(PROJECTS_KEY, projects)
 
-    fun getProjects(): Single<List<Project>> =
+    fun getProjects(): Single<List<ProjectCM>> =
         paperBook.read(PROJECTS_KEY)
 
     fun upsertSections(projectId: Long, sections: List<Section>): Completable =

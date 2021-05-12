@@ -3,10 +3,8 @@ package com.example.todoist.presentation.scene.sections
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.todoist.data.model.Project
 import com.example.todoist.data.model.Section
 import com.example.todoist.data.repository.TodoistRepository
-import com.example.todoist.presentation.common.Event
 import com.example.todoist.presentation.common.ScreenState
 import com.example.todoist.presentation.common.Screens
 import com.github.terrakok.cicerone.Router

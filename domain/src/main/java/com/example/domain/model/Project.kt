@@ -1,7 +1,7 @@
-package com.example.todoist.data.model
+package com.example.domain.model
 
 data class Project(
     val id: Long,
-    val color: Int,
+    val color: Color,
     val name: String
 )
