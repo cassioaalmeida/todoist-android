@@ -8,18 +8,21 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.viewbinding.BindableItem
 
-class ProjectsAdapter: GroupAdapter<GroupieViewHolder>() {
+class ProjectsAdapter(
+    private val onItemClicked: (ProjectDM) -> Unit
+): GroupAdapter<GroupieViewHolder>() {
 
-    fun setItems(projectList: List<Project>, clickListener: (Project) -> Unit){
-        projectList.forEach { add(ProjectItem(it, clickListener)) }
+    fun setItems(projectList: List<ProjectDM>){
+        projectList.forEach { add(ProjectItem(it)) }
     }
 
-    internal class  ProjectItem(private val project: Project, val clickListener: (Project) -> Unit): BindableItem<SimpleTextItemBinding>() {
+    inner class  ProjectItem(private val project: ProjectDM): BindableItem<SimpleTextItemBinding>() {
         override fun bind(viewBinding: SimpleTextItemBinding, position: Int) {
             viewBinding.textItem.text = project.name
+            viewBinding.root.setBackgroundColor(project.colorParsed)
 
             viewBinding.root.setOnClickListener {
-                clickListener(project)
+                onItemClicked(project)
             }
         }
 

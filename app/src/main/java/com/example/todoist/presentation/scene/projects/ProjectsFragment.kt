@@ -50,7 +50,9 @@ class ProjectsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = ProjectsAdapter()
+        val adapter = ProjectsAdapter(){ project ->
+            viewModel.onProjectClicked(project)
+        }
 
         binding.projectList.adapter = adapter
         binding.projectList.layoutManager = LinearLayoutManager(requireContext())
@@ -58,9 +60,7 @@ class ProjectsFragment : Fragment() {
         viewModel.screenState.observe(this){screenState ->
             when(screenState){
                 is ScreenState.Success -> {
-                    adapter.setItems(screenState.data){ project ->
-                        viewModel.onProjectClicked(project)
-                    }
+                    adapter.setItems(screenState.data)
                     binding.emptyStateIndicator.visibility = View.GONE
                     binding.progressIndicator.visibility = View.GONE
                     binding.projectList.visibility = View.VISIBLE

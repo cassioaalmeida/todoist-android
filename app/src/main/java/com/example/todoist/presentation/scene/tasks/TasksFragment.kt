@@ -2,19 +2,15 @@ package com.example.todoist.presentation.scene.tasks
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.todoist.R
 import com.example.todoist.common.TodoistApplication
 import com.example.todoist.databinding.FragmentTasksBinding
 import com.example.todoist.presentation.common.ScreenState
-import com.example.todoist.presentation.scene.sections.SectionsFragment
-import com.example.todoist.presentation.scene.tasks.TasksAdapter
-import com.example.todoist.presentation.scene.tasks.TasksViewModel
 import javax.inject.Inject
 
 class TasksFragment : Fragment() {

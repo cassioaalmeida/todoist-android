@@ -18,20 +18,21 @@ class ProjectsViewModel @Inject constructor(
     private val router: Router
 ): ViewModel() {
 
-    private val _screenState: MutableLiveData<ScreenState<List<Project>>> = MutableLiveData()
-    val screenState: LiveData<ScreenState<List<Project>>>
+    private val _screenState: MutableLiveData<ScreenState<List<ProjectDM>>> = MutableLiveData()
+    val screenState: LiveData<ScreenState<List<ProjectDM>>>
         get() = _screenState
 
     init {
         getProjectListUC.getSingle()
             .doOnSubscribe { _screenState.value = ScreenState.Loading }
+            .map { it.map { it.toDisplayModel() } }
             .subscribe(
                 { _screenState.value = ScreenState.Success(it) },
                 {_screenState.value = ScreenState.Error}
             ).addTo(compositeDisposable)
     }
 
-    fun onProjectClicked(project: Project) {
+    fun onProjectClicked(project: ProjectDM) {
         router.navigateTo(Screens.SectionsScreen(project.id))
     }
 

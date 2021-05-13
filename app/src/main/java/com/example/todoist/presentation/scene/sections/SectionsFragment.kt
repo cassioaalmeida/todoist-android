@@ -8,13 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.todoist.R
 import com.example.todoist.common.TodoistApplication
-import com.example.todoist.data.model.Task
 import com.example.todoist.databinding.FragmentSectionsBinding
 import com.example.todoist.presentation.common.ScreenState
-import com.example.todoist.presentation.common.Screens
-import com.example.todoist.presentation.scene.tasks.TasksFragment
 import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 
@@ -64,7 +60,9 @@ class SectionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = SectionsAdapter()
+        val adapter = SectionsAdapter(){ section ->
+            viewModel.onSectionClicked(section)
+        }
 
         binding.sectionList.adapter = adapter
         binding.sectionList.layoutManager = LinearLayoutManager(requireContext())
@@ -76,9 +74,7 @@ class SectionsFragment : Fragment() {
         viewModel.screenState.observe(this){ screenState ->
             when(screenState){
                 is ScreenState.Success -> {
-                    adapter.setItems(screenState.data){ section ->
-                        viewModel.onSectionClicked(section)
-                    }
+                    adapter.setItems(screenState.data)
                     binding.emptyStateIndicator.visibility = View.GONE
                     binding.progressIndicator.visibility = View.GONE
                     binding.sectionList.visibility = View.VISIBLE
