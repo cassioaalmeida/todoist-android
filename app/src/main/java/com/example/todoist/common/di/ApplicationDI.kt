@@ -1,14 +1,23 @@
 package com.example.todoist.common.di
 
+import com.example.domain.datarepository.TodoistDataRepository
 import com.example.todoist.data.remote.TodoistRDS
 import com.example.todoist.data.remote.infrastructure.TokenizeInterceptor
+import com.example.todoist.data.repository.TodoistRepository
 import com.example.todoist.presentation.scene.main.MainActivity
+import com.example.todoist.presentation.scene.projects.ProjectsFragment
+import com.example.todoist.presentation.scene.sections.SectionsFragment
+import com.example.todoist.presentation.scene.tasks.TasksFragment
+import com.github.terrakok.cicerone.Cicerone
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.Router
 import com.pacoworks.rxpaper2.RxPaperBook
 import dagger.Component
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -20,10 +29,26 @@ import javax.inject.Singleton
 @Component(modules = [ApplicationModule::class, ViewModelModule::class])
 interface ApplicationComponent {
     fun inject(mainActivity: MainActivity)
+    fun inject(fragment: ProjectsFragment)
+    fun inject(fragment: SectionsFragment)
+    fun inject(fragment: TasksFragment)
 }
 
 @Module
 class ApplicationModule {
+
+    @Singleton
+    @Provides
+    fun cicerone(): Cicerone<Router> = Cicerone.create()
+
+    @Provides
+    fun router(cicerone: Cicerone<Router>): Router = cicerone.router
+
+    @Provides
+    fun navigatorHolder(cicerone: Cicerone<Router>): NavigatorHolder = cicerone.getNavigatorHolder()
+
+    @Provides
+    fun compositeDisposable(): CompositeDisposable = CompositeDisposable()
 
     @Provides
     fun converterFactory(): GsonConverterFactory = GsonConverterFactory.create()
@@ -64,4 +89,7 @@ class ApplicationModule {
     @Provides
     @IOScheduler
     fun ioScheduler(): Scheduler = Schedulers.io()
+
+    @Provides
+    fun todoistDataRepository(todoistRepository: TodoistRepository): TodoistDataRepository = todoistRepository
 }

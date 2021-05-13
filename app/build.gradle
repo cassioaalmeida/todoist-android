@@ -66,6 +66,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
 
     implementation 'com.google.dagger:dagger:2.27'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.27'
 
     kapt 'com.google.dagger:dagger-android-processor:2.22.1'
@@ -74,4 +75,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'com.github.terrakok:cicerone:7.0'
+
+    implementation project(path: ':domain')
 }
